@@ -1,3 +1,5 @@
+#TODO: change inventory to dictionary and adjust all related data structures
+
 class Bicycle():
     def __init__(self, model, weight, cost):
         self.model = model
