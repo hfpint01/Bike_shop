@@ -23,8 +23,9 @@ class Shop:
         self.inventory = {}
         # self.avail_inventory = []
         self.markup = 0.2
-        self.store_profit = 0
+        self.sale_profit = 0
         self.sel_bike_price = None
+        self.store_profit = 0
 
     def initial_inventory(self, bicycle, quantity):
         """Creates initial inventory of shop inventory"""
@@ -42,10 +43,15 @@ class Shop:
                 avail_inventory.append(bicycle)
         return avail_inventory
 
-    def calc_profit(self, bike_cost):
+    def indiv_sale_profit(self, bike_cost):
         """Calculate how much profit the store made on a sale"""
         self.sel_bike_price = bike_cost
-        self.store_profit += self.sel_bike_price * self.markup
+        self.sale_profit += self.sel_bike_price * self.markup
+
+    def total_profit(self):
+        """Calculate the cumulative profit from all sales"""
+        self.store_profit += self.sale_profit
+        return self.store_profit
 
     def sell_bike(self, bike_name):
         """Remove a sold bike from inventory"""
@@ -96,11 +102,19 @@ class Customer:
         else:
             print("You gave an invalid selection")
 
-        shop.calc_profit(self.bike_sold.cost)
+        shop.indiv_sale_profit(self.bike_sold.cost)
         shop.sell_bike(self.bike_sold)
 
-        print("You purchased {}".format(self.bike_sold.model))
+        print("{name} purchased a(n) {bike} for ${price}".format(name=self.name, bike=self.bike_sold.model, price=
+                                                                self.bike_sold.cost))
         print("Money left in pocket: $" + str(self.money - self.bike_sold.cost))
+
+        print("These are the bikes left in inventory: ")  # Remaining stock
+        for i in shop.inventory:
+            print(i.model, shop.inventory[i])
+
+        print("Store profit from sale: ${}".format(shop.sale_profit))
+        print("Total profit: ${}".format(shop.total_profit()))
 
 
 if __name__ == "__main__":
@@ -131,30 +145,31 @@ if __name__ == "__main__":
         print("Name: {}".format(bicycle.model))
         print("Weight: {} lbs".format(bicycle.weight))
         print("Cost: ${}".format(bicycle.cost))
+    print("\n")
 
+    # Customer 1
     print("Dan's budget = ${}".format(dan.money))
     for bike in shop.show_inventory():
         dan.bikes_avail(bike)
     for item in dan.show_bikes_avail():
         print(item)
     dan.purchase()
-    print(shop.inventory)
-    print("Store profit: ${}".format(shop.store_profit))
+    print("\n")
 
+    # Customer 2
     print("Jessie's budget = {}".format(jessie.money))
     for bike in shop.show_inventory():
         jessie.bikes_avail(bike)
     for item in jessie.show_bikes_avail():
         print(item)
     jessie.purchase()
-    print(shop.inventory)
-    print("Store profit: ${}".format(shop.store_profit))
+    print("\n")
 
+    # Customer 3
     print("Brocks's budget = {}".format(brock.money))
     for bike in shop.show_inventory():
         brock.bikes_avail(bike)
     for item in brock.show_bikes_avail():
         print(item)
     brock.purchase()
-    print(shop.inventory)
-    print("Store profit: ${}".format(shop.store_profit))
+
