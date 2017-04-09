@@ -1,6 +1,3 @@
-from collections import defaultdict
-
-
 class Bicycle:
     """Models a bicycle with model, weight, and cost."""
     def __init__(self, model, weight, cost):
