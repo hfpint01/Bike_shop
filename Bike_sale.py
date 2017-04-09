@@ -21,7 +21,7 @@ class Shop:
     def __init__(self, name):
         self.name = name
         self.inventory = {}
-        self.avail_inventory = []
+        # self.avail_inventory = []
         self.markup = 0.2
         self.store_profit = 0
         self.sel_bike_price = None
@@ -36,10 +36,11 @@ class Shop:
 
     def show_inventory(self):
         """Displays bikes currently available"""
+        avail_inventory = []
         for bicycle in self.inventory:
             if self.inventory[bicycle] > 0:
-                self.avail_inventory.append(bicycle)
-        return self.avail_inventory
+                avail_inventory.append(bicycle)
+        return avail_inventory
 
     def calc_profit(self, bike_cost):
         """Calculate how much profit the store made on a sale"""
